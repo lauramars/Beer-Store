@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="jquery.fancybox.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="app">
+
+    <div class="name">
+      <img src="beerStore.png" alt="beer_name">
+    </div>
+
+    <div class="logo">
+      <img src="beer-draw-png.png" alt="beer_logo">
+    </div>
+
+    <div>
+      <form>
+        <input type="text" class="search" v-model="searchBox" placeholder="Search Beers">
+      </form>
+    </div>
+
+    <div class="flex-container" v-if="filteredBeers.lenght!==0">
+
+      <div class="flip-card" v-for="beer in filteredBeers">
+
+        <div class="add">
+          <form action="store.html" method="get">
+
+            <div class="qnty">
+              <input type="hidden" name="prod_rn" value="24" />
+              Quantity: <input type="text" name="quantity" size="2" value="1" />
+            </div>
+
+            <div class="sbt">
+              <input type="submit" value="Add to cart" />
+            </div>
+
+          </form>
+        </div>
+
+        <div class="flip-card-inner">
+
+          <div class="flip-card-front">
+
+            <div class="cover">
+              <img v-bind:src="beer.image_url" alt="beer_img">
+            </div>
+
+          </div>
+
+          <div class="flip-card-back">
+            <h5>{{beer.name}}</h5>
+            <p>{{beer.tagline}}</p>
+
+
+            <a data-fancybox :data-src="`#modal-${beer.id}`" href="javascript:;" class="btn btn-primary">More Info</a>
+
+            <div style="display: none;" :id="`modal-${beer.id}`" class="modal">
+              <h5>Description:</h5>
+              <p>{{beer.description}}</p>
+              <h5>Brewery Tips:</h5>
+              <p>{{beer.brewers_tips}}</p>
+              <h5>Food Pairing</h5>
+              <p>{{beer.food_pairing.join(", ")}}</p>
+              <h5>Ingredients:</h5>
+              <ul>
+                <li>
+                  <b>Malt:</b>
+                  {{beer.ingredients.malt.map(el=>el.name).join(", ")}}
+                </li>
+
+                <li>
+                  <b>Hops:</b>
+                  {{beer.ingredients.hops.map(el=>el.name).join(", ")}}
+                </li>
+
+                <li>
+                  <b>Yeast:</b>
+                  {{ beer.ingredients.yeast}}
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <h2 class="msg " v-if="filteredBeers.length==0">{{message}}</h2>
+  </div>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="dataBeer.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>
